@@ -7,9 +7,9 @@ void swap(char **str1, char **str2) {
     *str2 = tmp;
 }
 
-array_size_t get_max_length(strings_array_t strings, int strings_count) {
+array_size_t get_max_length(strings_array_t strings, size_t strings_count) {
     size_t max = strlen(strings[0]);
-    for (int i = 0; i < strings_count; ++i) {
+    for (size_t i = 0; i < strings_count; ++i) {
         size_t tmp_size = strlen(strings[i]);
         if (tmp_size > max) {
             max = tmp_size;
@@ -18,13 +18,13 @@ array_size_t get_max_length(strings_array_t strings, int strings_count) {
     return max;
 }
 
-void count_sort(strings_array_t array, int size, size_t k, comparator_func_t cmp) {
+void count_sort(strings_array_t array, size_t size, size_t k, comparator_func_t cmp) {
     strings_array_t b = malloc(sizeof(char *) * size);
     int *c = malloc(sizeof(int) * 257);
     for (int i = 0; i < 257; ++i) {
         c[i] = 0;
     }
-    for (int i = 0; i < size; ++i) {
+    for (size_t i = 0; i < size; ++i) {
         int tmp = k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0;
         c[tmp]++;
     }
@@ -37,16 +37,13 @@ void count_sort(strings_array_t array, int size, size_t k, comparator_func_t cmp
             c[i] += c[i + 1];
         }
     }
-
-    for (int i = size - 1; i >= 0; --i) {
+    for (size_t i = size - 1; i >= 0; --i) {
         b[c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0] - 1] = array[i];
         c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0]--;
     }
-
-    for (int i = 0; i < size; ++i) {
+    for (size_t i = 0; i < size; ++i) {
         array[i] = b[i];
     }
-
     free(b);
     free(c);
 }
@@ -62,9 +59,9 @@ void bubble(strings_array_t array, array_size_t size, comparator_func_t cmp) {
 }
 
 void insertion(strings_array_t array, array_size_t size, comparator_func_t cmp) {
-    for (int i = 1; i < size; i++) {
+    for (array_size_t i = 1; i < size; i++) {
         char *tmp = array[i];
-        for (int j = i - 1; j >= 0; j--) {
+        for (array_size_t j = i - 1; j >= 0; j--) {
             if (cmp(array[j], tmp) < 0) {
                 break;
             }
@@ -136,7 +133,7 @@ void quick(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     if (j > 0) {
         quick(array, j + 1, cmp);
     }
-    if (i < size) {
+    if (i < (long long)size) {
         quick(&array[i], size - i, cmp);
     }
 }
