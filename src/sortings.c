@@ -37,7 +37,7 @@ void count_sort(strings_array_t array, size_t size, size_t k, comparator_func_t 
             c[i] += c[i + 1];
         }
     }
-    for (size_t i = size - 1; i >= 0; --i) {
+    for (int i = (int)size - 1; i >= 0; --i) {
         b[c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0] - 1] = array[i];
         c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0]--;
     }
@@ -61,7 +61,7 @@ void bubble(strings_array_t array, array_size_t size, comparator_func_t cmp) {
 void insertion(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     for (array_size_t i = 1; i < size; i++) {
         char *tmp = array[i];
-        for (array_size_t j = i - 1; j >= 0; j--) {
+        for (int j = (int)i - 1; j >= 0; j--) {
             if (cmp(array[j], tmp) < 0) {
                 break;
             }
