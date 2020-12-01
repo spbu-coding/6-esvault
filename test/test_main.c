@@ -37,8 +37,8 @@ int cmp_file_and_str(const char* expected) {
             strcat(all_data, str);
         }
         // Commented code below can be useful for debug
-        // fprintf(stderr, "Got: %s\n", all_data);
-        // fprintf(stderr, "Exp: %s\n", expected);
+        fprintf(stderr, "Got: %s\n", all_data);
+        fprintf(stderr, "Exp: %s\n", expected);
         result = strcmp(all_data, expected);
         fclose(f);
     }
