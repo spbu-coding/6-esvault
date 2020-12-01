@@ -39,24 +39,24 @@ void sort(arguments_t arguments, strings_array_t strings) {
     }
 }
 
-int alloc_strings(strings_array_t *array, long long strings_count) {
-    (*array) = malloc(sizeof(char *) * strings_count);
-    if ((*array) == NULL) {
-        error("Cannot allocate array\n");
-        return ERROR_EXIT_CODE;
-    }
-    for (long long i = 0; i < strings_count; ++i) {
-        (*array)[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
-        if ((*array)[i] == NULL) {
-            for (long long j = 0; j < i; ++j) {
-                free((*array)[j]);
-            }
-            error("Cannot allocate array\n");
-            return ERROR_EXIT_CODE;
-        }
-    }
-    return 0;
-}
+//int alloc_strings(strings_array_t *array, long long strings_count) {
+//    (*array) = malloc(sizeof(char *) * strings_count);
+//    if ((*array) == NULL) {
+//        error("Cannot allocate array\n");
+//        return ERROR_EXIT_CODE;
+//    }
+//    for (long long i = 0; i < strings_count; ++i) {
+//        (*array)[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
+//        if ((*array)[i] == NULL) {
+//            for (long long j = 0; j < i; ++j) {
+//                free((*array)[j]);
+//            }
+//            error("Cannot allocate array\n");
+//            return ERROR_EXIT_CODE;
+//        }
+//    }
+//    return 0;
+//}
 
 void dealloc_strings(strings_array_t *array, array_size_t size) {
     for (array_size_t i = 0; i < size; ++i) {
@@ -110,9 +110,20 @@ int main(int argc,  char *argv[]) {
         return result;
     }
     strings_array_t strings = NULL;
-    int alloc_result = alloc_strings(&strings, arguments.strings_count);
-    if (alloc_result != 0) {
-        return alloc_result;
+    strings = malloc(sizeof(char *) * arguments.strings_count);
+    if (strings == NULL) {
+        error("Cannot allocate array\n");
+        return ERROR_EXIT_CODE;
+    }
+    for (long long i = 0; i < arguments.strings_count; ++i) {
+        strings[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
+        if (strings[i] == NULL) {
+            for (long long j = 0; j < i; ++j) {
+                free(strings[j]);
+            }
+            error("Cannot allocate array\n");
+            return ERROR_EXIT_CODE;
+        }
     }
     int reading_result = read_strings_from_file(arguments.input_filename, strings, arguments.strings_count);
     if (reading_result != 0) {
