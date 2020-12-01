@@ -81,7 +81,7 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
     size_t last_string_len = strlen(last_string);
     if (last_string[last_string_len - 1] != '\n') {
         last_string[last_string_len] = '\n';
-        last_string[last_string_len] = '\0';
+        last_string[last_string_len + 1] = '\0';
     }
     fclose(input);
     return 0;
