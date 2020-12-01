@@ -77,6 +77,12 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
             return ERROR_EXIT_CODE;
         }
     }
+    char *last_string = strings[strings_count - 1];
+    size_t last_string_len = strlen(last_string);
+    if (last_string[last_string_len - 1] != '\n') {
+        last_string[last_string_len] = '\n';
+        last_string[last_string_len] = '\0';
+    }
     fclose(input);
     return 0;
 }
@@ -88,10 +94,10 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
         return ERROR_EXIT_CODE;
     }
     for (int i = 0; i < strings_count; ++i) {
-        if (strings[i][strlen(strings[i]) - 1] != '\n') {
-            strcat(strings[i], "\n");
+        if (fputs(strings[i], output) == -1) {
+            error("Error of writing to %s", filename);
+            return ERROR_EXIT_CODE;
         }
-        fputs(strings[i], output);
     }
     fclose(output);
     return 0;
