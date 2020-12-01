@@ -24,6 +24,7 @@ size_t DEFAULT_ARGS_SIZE = 6;
 // Assumes that there are <= 10 string and each size is <= 1000
 // Hope no errors will arise :)
 int cmp_file_and_str(const char* expected) {
+    printf("27\n");
     FILE* f = fopen(OUTPUT_FILENAME, "r");
 
     // use any non 0 as failed status
@@ -33,13 +34,16 @@ int cmp_file_and_str(const char* expected) {
     char all_data[MAX_INPUT_STRING_SIZE * 10] = "";
 
     if (f != NULL) {
+        printf("37\n");
         while (fgets(str, MAX_INPUT_STRING_SIZE, f) != NULL) {
             strcat(all_data, str);
         }
+        printf("41\n");
         // Commented code below can be useful for debug
         fprintf(stderr, "Got: %s\n", all_data);
         fprintf(stderr, "Exp: %s\n", expected);
         result = strcmp(all_data, expected);
+        printf("46\n");
         fclose(f);
     }
     return result;
@@ -53,6 +57,7 @@ int test_real_main_vs_expected(
     int res = __real_main(args_size, args);
     assert_int_equal(res, expected_code);
     if (res == 0) {
+        printf("56\n");
         return cmp_file_and_str(expected_str);
     } else {
         return 0;
