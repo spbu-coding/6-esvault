@@ -114,28 +114,35 @@ void merge(strings_array_t a, array_size_t n, comparator_func_t cmp) {
     free(temp);
 }
 
-void quick(strings_array_t array, array_size_t size, comparator_func_t cmp) {
-    long long i = 0;
-    long long j = (long long)size - 1;
-    char *mid = array[size / 2];
-    do {
-        while (cmp(array[i], mid) < 0) {
-            i++;
+void quick_split(strings_array_t array, unsigned int beg, const unsigned int end, comparator_func_t cmp) {
+    while (beg < end) {
+        if ((array[beg] <= array[(beg + end - 1) / 2] && array[(beg + end - 1) / 2] <= array[end - 1]) || (array[end - 1] <= array[(beg + end - 1) / 2] && array[(beg + end - 1) / 2] <= array[beg])) {
+            swap(&array[beg], &array[(beg + end - 1) / 2]);
+        } else if ((array[beg] <= array[end - 1] && array[end - 1] <= array[(beg + end - 1) / 2]) || (array[(beg + end - 1) / 2] <= array[end - 1] && array[end - 1] <= array[beg])) {
+            swap(&array[beg], &array[end - 1]);
         }
-        while (cmp(array[j], mid) > 0) {
-            j--;
+        unsigned int left = beg, mid = beg + 1, right = end;
+        for (unsigned int i = 0; i < end - beg - 1; i++) {
+            const int cmp_result = cmp(array[mid], array[beg]);
+            if (cmp_result < 0) {
+                left++;
+                swap(&array[mid], &array[left]);
+                mid++;
+            } else if (cmp_result > 0) {
+                right--;
+                swap(&array[mid], &array[right]);
+            } else {
+                mid++;
+            }
         }
-        if (i <= j) {
-            swap(&array[i], &array[j]);
-            i++; j--;
-        }
-    } while(i <= j);
-    if (j > 0) {
-        quick(array, j + 1, cmp);
+        swap(&array[beg], &array[left]);
+        quick_split(array, beg, left, cmp);
+        beg = right;
     }
-    if (i < (long long)size) {
-        quick(&array[i], size - i, cmp);
-    }
+}
+
+void quick2(strings_array_t array, array_size_t size, comparator_func_t cmp) {
+    quick_split(array, 0, size, cmp);
 }
 
 void radix(strings_array_t array, array_size_t size, comparator_func_t cmp) {
