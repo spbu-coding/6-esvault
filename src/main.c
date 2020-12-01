@@ -105,10 +105,12 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
 
 int main(int argc,  char *argv[]) {
     arguments_t arguments;
+    error("main.c 108\n");
     int result = set_parameters_values(argc, argv, &arguments);
     if (result != 0) {
         return result;
     }
+    error("main.c 109\n");
     strings_array_t strings = NULL;
     strings = malloc(sizeof(char *) * arguments.strings_count);
     if (strings == NULL) {
@@ -125,15 +127,19 @@ int main(int argc,  char *argv[]) {
             return ERROR_EXIT_CODE;
         }
     }
+    error("main.c 111\n");
     int reading_result = read_strings_from_file(arguments.input_filename, strings, arguments.strings_count);
     if (reading_result != 0) {
         return reading_result;
     }
+    error("main.c 112\n");
     sort(arguments, strings);
+    error("main.c 113\n");
     int writing_result = write_string_to_file(arguments.output_filename, strings, arguments.strings_count);
     if (writing_result != 0) {
         return writing_result;
     }
+    error("main.c 114\n");
     dealloc_strings(&strings, arguments.strings_count);
     return 0;
 }
