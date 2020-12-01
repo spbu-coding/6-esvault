@@ -91,6 +91,9 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
     }
     for (int i = 0; i < strings_count; ++i) {
         fputs(strings[i], output);
+        if (i == strings_count - 1 && strings[i][strlen(strings[i]) - 1] != '\n') {
+            fputs("\n", output);
+        }
     }
     fclose(output);
     return 0;
