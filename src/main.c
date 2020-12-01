@@ -81,9 +81,13 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
     }
     error("main.c 82\n");
     char *last_string = strings[strings_count - 1];
+    error("main.c 84\n");
     size_t last_string_len = strlen(last_string);
+    error("main.c 84\n");
     if (last_string[last_string_len - 1] != '\n') {
+        error("main.c 84\n");
         last_string[last_string_len] = '\n';
+        error("main.c 84\n");
         last_string[last_string_len + 1] = '\0';
     }
     error("main.c 89\n");
