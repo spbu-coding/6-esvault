@@ -66,23 +66,27 @@ void dealloc_strings(strings_array_t *array, array_size_t size) {
 }
 
 int read_strings_from_file(const char *filename, strings_array_t strings, long long strings_count) {
+    error("main.c 69\n");
     FILE *input = fopen(filename, "rt");
     if (input == NULL) {
         error("Cannot open file %s", filename);
         return ERROR_EXIT_CODE;
     }
+    error("main.c 75\n");
     for (int i = 0; i < strings_count; ++i) {
         if (fgets(strings[i], MAX_INPUT_STRING_SIZE, input) == NULL) {
             error("Error of reading from %s", filename);
             return ERROR_EXIT_CODE;
         }
     }
+    error("main.c 82\n");
     char *last_string = strings[strings_count - 1];
     size_t last_string_len = strlen(last_string);
     if (last_string[last_string_len - 1] != '\n') {
         last_string[last_string_len] = '\n';
         last_string[last_string_len + 1] = '\0';
     }
+    error("main.c 89\n");
     fclose(input);
     return 0;
 }
