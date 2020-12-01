@@ -73,6 +73,7 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
         return ERROR_EXIT_CODE;
     }
     error("main.c 75\n");
+    error("%lld\n", strings_count);
     for (int i = 0; i < strings_count; ++i) {
         if (fgets(strings[i], MAX_INPUT_STRING_SIZE, input) == NULL) {
             error("Error of reading from %s", filename);
