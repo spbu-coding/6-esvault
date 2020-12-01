@@ -78,7 +78,7 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
             error("Error of reading from %s", filename);
             return ERROR_EXIT_CODE;
         }
-        error("%s\n", strings[i]);
+        error("%d: %s", i, strings[i]);
     }
     error("main.c 82\n");
     char *last_string = strings[strings_count - 1];
