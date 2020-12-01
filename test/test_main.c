@@ -54,8 +54,11 @@ int test_real_main_vs_expected(
     char* args[], size_t args_size,
     int expected_code, const char* expected_str)
 {
+    fprintf(stderr, "157\n");
     int res = __real_main(args_size, args);
+    fprintf(stderr, "159\n");
     assert_int_equal(res, expected_code);
+    fprintf(stderr, "161\n");
     if (res == 0) {
         fprintf(stderr, "56\n");
         return cmp_file_and_str(expected_str);
