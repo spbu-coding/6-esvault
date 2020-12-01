@@ -141,7 +141,7 @@ void quick_split(strings_array_t array, unsigned int beg, const unsigned int end
     }
 }
 
-void quick2(strings_array_t array, array_size_t size, comparator_func_t cmp) {
+void quick(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     quick_split(array, 0, size, cmp);
 }
 
