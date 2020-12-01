@@ -115,6 +115,7 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
 }
 
 int main(int argc,  char *argv[]) {
+    error("%s\n", argv[1]);
     arguments_t arguments;
     error("main.c 108\n");
     int result = set_parameters_values(argc, argv, &arguments);
