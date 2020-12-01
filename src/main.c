@@ -72,11 +72,9 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
         return ERROR_EXIT_CODE;
     }
     for (int i = 0; i < strings_count; ++i) {
-        if (feof(input)) {
-            error("File does`n contain %lld strings", strings_count);
+        if (fgets(strings[i], MAX_INPUT_STRING_SIZE, input) == NULL) {
+            error("Error of reading from %s", filename);
             return ERROR_EXIT_CODE;
-        } else {
-            fgets(strings[i], MAX_INPUT_STRING_SIZE, input);
         }
     }
     fclose(input);
@@ -90,10 +88,10 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
         return ERROR_EXIT_CODE;
     }
     for (int i = 0; i < strings_count; ++i) {
-        fputs(strings[i], output);
         if (strings[i][strlen(strings[i]) - 1] != '\n') {
-            fputs("\n", output);
+            strcat(strings[i], "\n");
         }
+        fputs(strings[i], output);
     }
     fclose(output);
     return 0;
