@@ -109,6 +109,11 @@ int main(int argc,  char *argv[]) {
     if (result != 0) {
         return result;
     }
+    if (arguments.strings_count == 0) {
+        FILE *out = fopen(arguments.output_filename, "wt");
+        fprintf(out, "\n");
+        return 0;
+    }
     strings_array_t strings = NULL;
     int allocation_result = alloc_strings(&strings, arguments.strings_count);
     if (allocation_result != 0) {
