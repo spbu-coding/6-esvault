@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char *from_1_to_5[14] = {
+char *_from_1_to_5[14] = {
         "string data 1\n",
         "string data 2\n",
         "string data 3\n",
@@ -9,7 +9,7 @@ char *from_1_to_5[14] = {
         "string data 5\n"
 };
 
-char *from_5_to_1[14] = {
+char *_from_5_to_1[14] = {
         "string data 5\n",
         "string data 4\n",
         "string data 3\n",
@@ -17,7 +17,7 @@ char *from_5_to_1[14] = {
         "string data 1\n"
 };
 
-char *expected_data[14] = {
+char *_expected_data[14] = {
         "string data 4\n",
         "string data 5\n"
 };
@@ -31,16 +31,16 @@ int main(int argc, char *argv[]) {
     if (strcmp(argv[1], "5") == 0) {
         if (strcmp(argv[5], "asc") == 0) {
             for (int i = 0; i < 5; ++i) {
-                fprintf(output, "%s", from_1_to_5[i]);
+                fprintf(output, "%s", _from_1_to_5[i]);
             }
         } else {
             for (int i = 0; i < 5; ++i) {
-                fprintf(output, "%s", from_5_to_1[i]);
+                fprintf(output, "%s", _from_5_to_1[i]);
             }
         }
     } else if (strcmp(argv[1], "2") == 0){
-        fprintf(output, "%s", expected_data[0]);
-        fprintf(output, "%s", expected_data[1]);
+        fprintf(output, "%s", _expected_data[0]);
+        fprintf(output, "%s", _expected_data[1]);
     } else {
         return -1;
     }
