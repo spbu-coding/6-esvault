@@ -105,7 +105,6 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
 
 int main(int argc,  char *argv[]) {
     arguments_t arguments;
-    error("Count os strings from input parameters: %s\n", argv[1]);
     int result = set_parameters_values(argc, argv, &arguments);
     if (result != 0) {
         return result;
@@ -113,6 +112,7 @@ int main(int argc,  char *argv[]) {
     if (arguments.strings_count == 0) {
         FILE *out = fopen(arguments.output_filename, "wt");
         fprintf(out, "\n");
+        fclose(out);
         return 0;
     }
     strings_array_t strings = NULL;
