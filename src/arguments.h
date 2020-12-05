@@ -6,7 +6,7 @@
 #define MAX_LENGTH_COMPARER_NAME 4
 
 typedef struct {
-    long long strings_count;
+    int strings_count;
     char input_filename[MAX_LENGTH_FILE_NAME];
     char output_filename[MAX_LENGTH_FILE_NAME];
     char algorithm_name[MAX_LENGTH_ALGORITHM_NAME];

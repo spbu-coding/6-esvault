@@ -7,6 +7,10 @@
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
 
+int asc_cmp(const char *str1, const char *str2) {
+    return strcmp(str1, str2);
+}
+
 int des_cmp(const char *str1, const char *str2) {
     return -strcmp(str1, str2);
 }
@@ -14,15 +18,15 @@ int des_cmp(const char *str1, const char *str2) {
 void sort(arguments_t arguments, strings_array_t strings) {
     if (strcmp(arguments.comparer_name, "asc") == 0) {
         if (strcmp(arguments.algorithm_name, "bubble") == 0) {
-            bubble(strings, arguments.strings_count, strcmp);
+            bubble(strings, arguments.strings_count, asc_cmp);
         } else if (strcmp(arguments.algorithm_name, "insertion") == 0) {
-            insertion(strings, arguments.strings_count, strcmp);
+            insertion(strings, arguments.strings_count, asc_cmp);
         } else if (strcmp(arguments.algorithm_name, "merge") == 0) {
-            merge(strings, arguments.strings_count, strcmp);
+            merge(strings, arguments.strings_count, asc_cmp);
         } else if (strcmp(arguments.algorithm_name, "quick") == 0) {
-            quick(strings, arguments.strings_count, strcmp);
+            quick(strings, arguments.strings_count, asc_cmp);
         } else {
-            radix(strings, arguments.strings_count, strcmp);
+            radix(strings, arguments.strings_count, asc_cmp);
         }
     } else {
         if (strcmp(arguments.algorithm_name, "bubble") == 0) {
@@ -39,7 +43,7 @@ void sort(arguments_t arguments, strings_array_t strings) {
     }
 }
 
-int alloc_strings(strings_array_t *array, long long strings_count) {
+int alloc_strings(strings_array_t *array, int strings_count) {
     (*array) = malloc(sizeof(char *) * strings_count);
     if ((*array) == NULL) {
         error("Cannot allocate array\n");
@@ -65,7 +69,7 @@ void dealloc_strings(strings_array_t *array, array_size_t size) {
     free(*array);
 }
 
-int read_strings_from_file(const char *filename, strings_array_t strings, long long strings_count) {
+int read_strings_from_file(const char *filename, strings_array_t strings, int strings_count) {
     FILE *input = fopen(filename, "rt");
     if (input == NULL) {
         error("Cannot open file %s", filename);
@@ -87,7 +91,7 @@ int read_strings_from_file(const char *filename, strings_array_t strings, long l
     return 0;
 }
 
-int write_string_to_file(const char *filename, strings_array_t strings, long long strings_count) {
+int write_strings_to_file(const char *filename, strings_array_t strings, int strings_count) {
     FILE *output = fopen(filename, "wt");
     if (output == NULL) {
         error("Cannot open file %s", filename);
@@ -106,6 +110,7 @@ int write_string_to_file(const char *filename, strings_array_t strings, long lon
 int main(int argc,  char *argv[]) {
     arguments_t arguments;
     int result = set_parameters_values(argc, argv, &arguments);
+    error("Strings count: %d\nInput: %s\nOutput: %s\n", arguments.strings_count, arguments.input_filename, arguments.output_filename);
     if (result != 0) {
         return result;
     }
@@ -125,7 +130,7 @@ int main(int argc,  char *argv[]) {
         return reading_result;
     }
     sort(arguments, strings);
-    int writing_result = write_string_to_file(arguments.output_filename, strings, arguments.strings_count);
+    int writing_result = write_strings_to_file(arguments.output_filename, strings, arguments.strings_count);
     if (writing_result != 0) {
         return writing_result;
     }
