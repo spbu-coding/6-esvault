@@ -74,9 +74,6 @@ void insertion(strings_array_t array, array_size_t size, comparator_func_t cmp) 
 void merge(strings_array_t a, array_size_t n, comparator_func_t cmp) {
     array_size_t step = 1;
     strings_array_t  temp = malloc(n * sizeof(char *));
-    for (array_size_t i = 0; i < n; ++i) {
-        temp[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
-    }
     while (step < n) {
         array_size_t index = 0;
         array_size_t l = 0;
@@ -107,9 +104,6 @@ void merge(strings_array_t a, array_size_t n, comparator_func_t cmp) {
             a[i] = temp[i];
         }
         step *= 2;
-    }
-    for (array_size_t i = 0; i < n; ++i) {
-        free(temp[i]);
     }
     free(temp);
 }
