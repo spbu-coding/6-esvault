@@ -4,6 +4,7 @@
 
 #define MAX_FILENAME_LEN 100
 #define VALID_ARGUMENTS_NUM 6
+
 #define ERROR_CODE -1
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
@@ -83,34 +84,35 @@ void dealloc_strings(strings_array_t *array, array_size_t size) {
     free(*array);
 }
 
-int alloc_strings(strings_array_t *array, int strings_count) {
-    (*array) = malloc(sizeof(char *) * strings_count);
+int alloc_strings(strings_array_t *array, int strings_num) {
+    (*array) = malloc(sizeof(char *) * strings_num);
     if ((*array) == NULL) {
         error("Cannot allocate array\n");
         return ERROR_CODE;
     }
-    for (int i = 0; i < strings_count; ++i) {
+    for (int i = 0; i < strings_num; ++i) {
         (*array)[i] = malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
         if ((*array)[i] == NULL) {
+            error("Cannot allocate array[%d]\n", i);
             dealloc_strings(array, i);
         }
     }
     return 0;
 }
 
-int read_strings_from_file(const char *filename, strings_array_t strings, int strings_count) {
+int read_strings_from_file(const char *filename, strings_array_t strings, int strings_num) {
     FILE *input = fopen(filename, "rt");
     if (input == NULL) {
         error("Cannot open file %s", filename);
         return ERROR_CODE;
     }
-    for (int i = 0; i < strings_count; ++i) {
+    for (int i = 0; i < strings_num; ++i) {
         if (fgets(strings[i], MAX_INPUT_STRING_SIZE, input) == NULL) {
             error("Error of reading from %s", filename);
             return ERROR_CODE;
         }
     }
-    char *last_string = strings[strings_count - 1];
+    char *last_string = strings[strings_num - 1];
     size_t last_string_len = strlen(last_string);
     if (last_string[last_string_len - 1] != '\n') {
         last_string[last_string_len] = '\n';
@@ -120,13 +122,13 @@ int read_strings_from_file(const char *filename, strings_array_t strings, int st
     return 0;
 }
 
-int write_strings_to_file(const char *filename, strings_array_t strings, int strings_count) {
+int write_strings_to_file(const char *filename, strings_array_t strings, int strings_num) {
     FILE *output = fopen(filename, "wt");
     if (output == NULL) {
         error("Cannot open file %s", filename);
         return ERROR_CODE;
     }
-    for (int i = 0; i < strings_count; ++i) {
+    for (int i = 0; i < strings_num; ++i) {
         if (fputs(strings[i], output) == -1) {
             error("Error of writing to %s", filename);
             return ERROR_CODE;
@@ -144,8 +146,12 @@ int main(int argc, char *argv[]) {
     }
     if (arguments.strings_num == 0) {
         char *n[1] = {"\n"};
-        write_strings_to_file(arguments.output_filename, n, 1);
-
+        int writing_result = write_strings_to_file(arguments.output_filename, n, 1);
+        if (writing_result != 0) {
+            error("Cannot write \\n to file %s\n", arguments.output_filename);
+            return ERROR_CODE;
+        }
+        return 0;
     }
     strings_array_t strings = NULL;
     int allocation_result = alloc_strings(&strings, arguments.strings_num);

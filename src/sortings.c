@@ -1,6 +1,8 @@
 #include "sortings.h"
 #include <stdlib.h>
 
+#define ASCII_LEN 128
+
 void swap(char **str1, char **str2) {
     char *tmp = *str1;
     *str1 = *str2;
@@ -19,33 +21,33 @@ array_size_t get_max_length(strings_array_t strings, size_t strings_count) {
 }
 
 void count_sort(strings_array_t array, size_t size, size_t k, comparator_func_t cmp) {
-    strings_array_t b = malloc(sizeof(char *) * size);
-    int *c = malloc(sizeof(int) * 257);
-    for (int i = 0; i < 257; ++i) {
-        c[i] = 0;
+    strings_array_t tmp_array = malloc(sizeof(char *) * size);
+    int *ascii_array = malloc(sizeof(int) * ASCII_LEN);
+    for (int i = 0; i < ASCII_LEN; ++i) {
+        ascii_array[i] = 0;
     }
     for (size_t i = 0; i < size; ++i) {
         int tmp = k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0;
-        c[tmp]++;
+        ascii_array[tmp]++;
     }
-    if (cmp("a", "b") < 0) {
-        for (int i = 1; i < 257; ++i) {
-            c[i] += c[i - 1];
+    if (cmp("a", "tmp_array") < 0) {
+        for (int i = 1; i < ASCII_LEN; ++i) {
+            ascii_array[i] += ascii_array[i - 1];
         }
     } else {
-        for (int i = 257 - 2; i >=0; --i) {
-            c[i] += c[i + 1];
+        for (int i = ASCII_LEN - 2; i >=0; --i) {
+            ascii_array[i] += ascii_array[i + 1];
         }
     }
     for (int i = (int)size - 1; i >= 0; --i) {
-        b[c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0] - 1] = array[i];
-        c[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0]--;
+        tmp_array[ascii_array[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0] - 1] = array[i];
+        ascii_array[k < strlen(array[i]) ? (int)(unsigned char)array[i][k] + 1 : 0]--;
     }
     for (size_t i = 0; i < size; ++i) {
-        array[i] = b[i];
+        array[i] = tmp_array[i];
     }
-    free(b);
-    free(c);
+    free(tmp_array);
+    free(ascii_array);
 }
 
 void bubble(strings_array_t array, array_size_t size, comparator_func_t cmp) {
@@ -71,44 +73,44 @@ void insertion(strings_array_t array, array_size_t size, comparator_func_t cmp) 
     }
 }
 
-void merge(strings_array_t a, array_size_t n, comparator_func_t cmp) {
+void merge(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     array_size_t step = 1;
-    strings_array_t  temp = malloc(n * sizeof(char *));
-    while (step < n) {
+    strings_array_t  temp = malloc(size * sizeof(char *));
+    while (step < size) {
         array_size_t index = 0;
-        array_size_t l = 0;
-        array_size_t m = l + step;
-        array_size_t r = l + step * 2;
+        array_size_t left = 0;
+        array_size_t mid = left + step;
+        array_size_t right = left + step * 2;
         do {
-            m = m < n ? m : n;
-            r = r < n ? r : n;
-            array_size_t i1 = l, i2 = m;
-            for (; i1 < m && i2 < r; ) {
-                if (cmp(a[i1], a[i2]) < 0) {
-                    temp[index++] = a[i1++];
+            mid = mid < size ? mid : size;
+            right = right < size ? right : size;
+            array_size_t i1 = left, i2 = mid;
+            for (; i1 < mid && i2 < right; ) {
+                if (cmp(array[i1], array[i2]) < 0) {
+                    temp[index++] = array[i1++];
                 } else {
-                    temp[index++] = a[i2++];
+                    temp[index++] = array[i2++];
                 }
             }
-            while (i1 < m) {
-                temp[index++] = a[i1++];
+            while (i1 < mid) {
+                temp[index++] = array[i1++];
             }
-            while (i2 < r) {
-                temp[index++] = a[i2++];
+            while (i2 < right) {
+                temp[index++] = array[i2++];
             }
-            l += step * 2;
-            m += step * 2;
-            r += step * 2;
-        } while (l < n);
-        for (array_size_t i = 0; i < n; i++) {
-            a[i] = temp[i];
+            left += step * 2;
+            mid += step * 2;
+            right += step * 2;
+        } while (left < size);
+        for (array_size_t i = 0; i < size; i++) {
+            array[i] = temp[i];
         }
         step *= 2;
     }
     free(temp);
 }
 
-void quick_split(strings_array_t array, unsigned int beg, const unsigned int end, comparator_func_t cmp) {
+void quick_split(strings_array_t array, unsigned int beg, unsigned int end, comparator_func_t cmp) {
     while (beg < end) {
         if ((array[beg] <= array[(beg + end - 1) / 2] && array[(beg + end - 1) / 2] <= array[end - 1]) || (array[end - 1] <= array[(beg + end - 1) / 2] && array[(beg + end - 1) / 2] <= array[beg])) {
             swap(&array[beg], &array[(beg + end - 1) / 2]);
