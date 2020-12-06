@@ -37,8 +37,8 @@ int cmp_file_and_str(const char* expected) {
             strcat(all_data, str);
         }
         // Commented code below can be useful for debug
-        // fprintf(stderr, "Got: %s\n", all_data);
-        // fprintf(stderr, "Exp: %s\n", expected);
+        fprintf(stderr, "Got: %s\n", all_data);
+        fprintf(stderr, "Exp: %s\n", expected);
         result = strcmp(all_data, expected);
         fclose(f);
     }
@@ -118,11 +118,12 @@ void run_sortings_with_different_correct_params(char* args[]) {
     args[2] = "5_string_inp_asc.txt";
     assert_int_equal(0, 
         test_real_main_vs_expected(args, DEFAULT_ARGS_SIZE, SUCCESS_CODE, from_1_to_5));
+    
+    printf("122\n");
 
     args[2] = "5_string_inp_des.txt";
     assert_int_equal(0, 
         test_real_main_vs_expected(args, DEFAULT_ARGS_SIZE, SUCCESS_CODE, from_1_to_5));
-    
 
     // Run with descending comparator
     args[5] = "des";
